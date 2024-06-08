@@ -1,0 +1,171 @@
+using System;
+using System.IO;
+using System.Windows.Forms;
+
+namespace FtpSettingsApp
+{
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new SettingsForm());
+        }
+    }
+
+    public partial class SettingsForm : Form
+    {
+        private const string SettingsFilePath = "ftp_settings.txt";
+
+        private Label lblFtpAddress;
+        private TextBox txtFtpAddress;
+        private Label lblPort;
+        private TextBox txtPort;
+        private Label lblUsername;
+        private TextBox txtUsername;
+        private Label lblPassword;
+        private TextBox txtPassword;
+        private Button btnSave;
+
+        public SettingsForm()
+        {
+            InitializeComponent();
+            LoadSettings();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+        }
+
+        private void LoadSettings()
+        {
+            if (File.Exists(SettingsFilePath))
+            {
+                string[] lines = File.ReadAllLines(SettingsFilePath);
+                if (lines.Length >= 4)
+                {
+                    txtFtpAddress.Text = lines[0];
+                    txtPort.Text = lines[1];
+                    txtUsername.Text = lines[2];
+                    txtPassword.Text = lines[3];
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            string[] settings = new string[4];
+            settings[0] = txtFtpAddress.Text;
+            settings[1] = txtPort.Text;
+            settings[2] = txtUsername.Text;
+            settings[3] = txtPassword.Text;
+
+            File.WriteAllLines(SettingsFilePath, settings);
+            MessageBox.Show("Settings saved successfully!");
+        }
+
+        private void InitializeComponent()
+        {
+            this.lblFtpAddress = new System.Windows.Forms.Label();
+            this.txtFtpAddress = new System.Windows.Forms.TextBox();
+            this.lblPort = new System.Windows.Forms.Label();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            
+            // lblFtpAddress
+            this.lblFtpAddress.AutoSize = true;
+            this.lblFtpAddress.Location = new System.Drawing.Point(12, 9);
+            this.lblFtpAddress.Name = "lblFtpAddress";
+            this.lblFtpAddress.Size = new System.Drawing.Size(64, 13);
+            this.lblFtpAddress.TabIndex = 0;
+            this.lblFtpAddress.Text = "FTP Address";
+            
+            // txtFtpAddress
+            this.txtFtpAddress.Location = new System.Drawing.Point(12, 25);
+            this.txtFtpAddress.Name = "txtFtpAddress";
+            this.txtFtpAddress.Size = new System.Drawing.Size(260, 20);
+            this.txtFtpAddress.TabIndex = 1;
+            
+            // lblPort
+            this.lblPort.AutoSize = true;
+            this.lblPort.Location = new System.Drawing.Point(12, 48);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(26, 13);
+            this.lblPort.TabIndex = 2;
+            this.lblPort.Text = "Port";
+            
+            // txtPort
+            this.txtPort.Location = new System.Drawing.Point(12, 64);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(260, 20);
+            this.txtPort.TabIndex = 3;
+            
+            // lblUsername
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.Location = new System.Drawing.Point(12, 87);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(55, 13);
+            this.lblUsername.TabIndex = 4;
+            this.lblUsername.Text = "Username";
+            
+            // txtUsername
+            this.txtUsername.Location = new System.Drawing.Point(12, 103);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(260, 20);
+            this.txtUsername.TabIndex = 5;
+            
+            // lblPassword
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(12, 126);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(53, 13);
+            this.lblPassword.TabIndex = 6;
+            this.lblPassword.Text = "Password";
+            
+            // txtPassword
+            this.txtPassword.Location = new System.Drawing.Point(12, 142);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(260, 20);
+            this.txtPassword.TabIndex = 7;
+            this.txtPassword.UseSystemPasswordChar = true;
+            
+            // btnSave
+            this.btnSave.Location = new System.Drawing.Point(197, 168);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            
+            // SettingsForm
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(284, 201);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.txtPassword);
+            this.Controls.Add(this.lblPassword);
+            this.Controls.Add(this.txtUsername);
+            this.Controls.Add(this.lblUsername);
+            this.Controls.Add(this.txtPort);
+            this.Controls.Add(this.lblPort);
+            this.Controls.Add(this.txtFtpAddress);
+            this.Controls.Add(this.lblFtpAddress);
+            this.Name = "SettingsForm";
+            this.Text = "FTP Settings";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+        }
+    }
+}
